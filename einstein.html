@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Digital Portfolio</title>
+  <style>
+    /* ========= Root Variables ========= */
+    :root {
+      --blue: #007bff;
+      --red: #dc3545;
+      --bg-light: #f0f8ff; /* light blue */
+      --text-dark: #222222;
+      --text-light: #ffffff;
+      --border-color: #007bff88;
+    }
+
+    [data-theme="light"] {
+      --bg-color: var(--bg-light);
+      --text-color: var(--text-dark);
+      --primary-color: var(--blue);
+      --secondary-color: var(--red);
+      --border-color: var(--primary-color);
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #eeeeee;
+      --primary-color: var(--blue);
+      --secondary-color: var(--red);
+      --border-color: var(--primary-color);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: all 0.4s ease-in-out;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      max-width: 1000px;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      color: var(--text-light);
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: var(--text-light);
+      font-weight: 600;
+      text-decoration: none;
+      position: relative;
+      padding: 5px 0;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      width: 0;
+      background: var(--text-light);
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      color: var(--secondary-color);
+    }
+
+    nav a:hover::after,
+    nav a:focus::after {
+      width: 100%;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 2px solid var(--text-light);
+      color: var(--text-light);
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      background-color: var(--secondary-color);
+      border-color: var(--secondary-color);
+      color: var(--text-light);
+      transform: scale(1.05);
+    }
+
+    section {
+      max-width: 900px;
+      margin: 60px auto 40px;
+      padding: 0 20px;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    #home {
+      padding-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .profile-container {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid var(--primary-color);
+      margin-bottom: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .profile-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      max-width: 600px;
+      margin: auto;
+      color: var(--text-color);
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      justify-items: center;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: var(--text-light);
+      color: var(--text-dark);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 320px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 0 20px var(--primary-color);
+      border-color: var(--secondary-color);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      max-width: 500px;
+      margin: 30px auto 0;
+    }
+
+    input, textarea {
+      padding: 12px 15px;
+      border: 2px solid var(--primary-color);
+      border-radius: 8px;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 8px var(--secondary-color);
+    }
+
+    button {
+      padding: 12px;
+      background: var(--secondary-color);
+      color: var(--text-light);
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+      background: var(--primary-color);
+      transform: scale(1.05);
+    }
+
+    #formMessage {
+      font-weight: 600;
+      margin-top: 12px;
+      color: var(--secondary-color);
+      min-height: 1.4rem;
+    }
+
+    /* GitHub link at contact bottom */
+    .github-contact {
+      margin-top: 30px;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--secondary-color);
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .github-contact:hover,
+    .github-contact:focus {
+      color: var(--primary-color);
+    }
+
+    .github-contact svg {
+      fill: var(--secondary-color);
+      transition: fill 0.3s ease;
+      width: 24px;
+      height: 24px;
+    }
+
+    .github-contact:hover svg,
+    .github-contact:focus svg {
+      fill: var(--primary-color);
+    }
+
+    footer {
+      text-align: center;
+      padding: 18px 0;
+      font-size: 0.9rem;
+      color: #555;
+      width: 100%;
+      max-width: 900px;
+      margin: 40px auto 20px;
+      border-top: 1px solid #ddd;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 1rem;
+      }
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+      }
+      nav a {
+        font-size: 1rem;
+      }
+      .projects {
+        grid-template-columns: 1fr;
+      }
+      .profile-container {
+        width: 150px;
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <header>
+    <h1>Einstein Joan</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+  </header>
+
+  <section id="home">
+    <div class="profile-container">
+      <img src="https://as2.ftcdn.net/v2/jpg/05/56/19/27/1000_F_556192719_ufc0kALMglVMchMm0qkzc7N1TskdMrEd.jpg" alt="Einstein Joan" class="profile-img">
+    </div>
+    <h2>Hello, I'm Einstein Joan</h2>
+    <p>Web Developer | Designer | Fitness Enthusiast</p>
+  </section>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>I'm a passionate web developer who turns ideas into responsive, user-friendly websites. <br>
+    Skilled in HTML, CSS, JavaScript, and modern frameworks like React. <br>
+    I love clean code, thoughtful design, and continuous learning. <br>
+    Let’s build fast, functional, and beautiful web experiences together and forever.</p>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="card" tabindex="0" role="button" aria-label="View project: Custom portfolio website">
+        <img src="https://assets.justinmind.com/wp-content/uploads/2021/11/web-design-portfolio-sites-portfoliobox.png" alt="Portfolio Project" class="card-img">
+        <div class="card-content">
+          <h3>💡 Custom Portfolio</h3>
+          <p>Responsive portfolio website built with HTML, CSS, and JavaScript. Deployed on GitHub Pages.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <form onsubmit="sendMessage(event)" aria-label="Contact form">
+      <input type="text" placeholder="Your Name" required aria-required="true" />
+      <input type="email" placeholder="Your Email" required aria-required="true" />
+      <textarea rows="5" placeholder="Your Message" required aria-required="true"></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+    <p id="formMessage" aria-live="polite"></p>
+
+    <!-- GitHub Link at Contact bottom -->
+    <a href="https://github.com/24h246-crypto" target="_blank" rel="noopener noreferrer" class="github-contact" aria-label="GitHub Profile">
+      <svg aria-hidden="true" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38 
+        0-.19-.01-.82-.01-1.49-2 .37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+        0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+        0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 012 0c1.53-1.04 2.2-.82 2.2-.82
+        .44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48
+        0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+    Click to view my github profile
+    </a>
+  </section>
+
+  <footer>
+    &copy; 2025 Einstein Joan. All rights reserved.
+  </footer>
+
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      if(body.getAttribute('data-theme') === 'light') {
+        body.setAttribute('data-theme', 'dark');
+      } else {
+        body.setAttribute('data-theme', 'light');
+      }
+    }
+
+    function sendMessage(e) {
+      e.preventDefault();
+      const form = e.target;
+      const messageEl = document.getElementById('formMessage');
+      // Simple validation & feedback
+      messageEl.textContent = "Thanks for reaching out! I'll get back to you soon.";
+      form.reset();
+    }
+  </script>
+</body>
+</html>
